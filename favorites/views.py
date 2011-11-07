@@ -174,8 +174,12 @@ def toggle_favorite(request, content_type_id, object_id, redirect_to=None,
             object_id=object_id, user=request.user)
     if not favs: 
         favorite = Favorite.objects.create_favorite(obj, request.user)
+        return HttpResponse(simplejson.dumps({'favorite': True}),
+                            'application/javascript',
+                            status=200)
     else:
         favs.delete()
-
-    return redirect(redirect_to or request.META.get('HTTP_REFERER', 'favorites'))
-
+        return HttpResponse(simplejson.dumps({'favorite': False}),
+                            'application/javascript',
+                            status=200)
+#    return redirect(redirect_to or request.META.get('HTTP_REFERER', 'favorites'))
